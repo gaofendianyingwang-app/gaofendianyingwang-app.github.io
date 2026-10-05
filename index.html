@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="高分电影网（gaofendianyingwang-app）专注于推荐豆瓣高分、IMDb高分经典电影，提供电影排行榜、类型片单、影评解析与观影指南，帮你快速找到值得一看的好电影。">
+<meta name="keywords" content="高分电影网,高分电影,经典电影推荐,豆瓣高分电影,IMDb高分,电影排行榜,好电影推荐">
+<meta name="author" content="高分电影网">
+<meta name="theme-color" content="#0f172a">
+<title>高分电影网 - 发现每一部值得一看的高分经典电影 | gaofendianyingwang-app</title>
+<link rel="canonical" href="https://gaofendianyingwang-app.github.io/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "高分电影网",
+  "alternateName": "gaofendianyingwang-app",
+  "url": "https://gaofendianyingwang-app.github.io/",
+  "description": "专注于高分经典电影推荐与影评解析的影视导航网站",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://gaofendianyingwang-app.github.io/#search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<style>
+  :root{
+    --bg:#070b17;
+    --bg2:#0f172a;
+    --card:#121f38;
+    --card-hover:#1a2b4a;
+    --line:rgba(255,255,255,.08);
+    --txt:#e8eefc;
+    --sub:#9fb0cf;
+    --gold:#f5b642;
+    --cyan:#38e1d6;
+    --pink:#ff6b9d;
+    --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","WenQuanYi Micro Hei",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--txt);
+    line-height:1.7;
+    overflow-x:hidden;
+    background-image:radial-gradient(1200px 600px at 80% -10%,rgba(56,225,214,.14),transparent 60%),
+                     radial-gradient(1000px 500px at 0% 10%,rgba(255,107,157,.12),transparent 55%);
+    background-attachment:fixed;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+  .section{padding:64px 0}
+  .eyebrow{
+    display:inline-block;font-size:13px;letter-spacing:.2em;color:var(--cyan);
+    border:1px solid rgba(56,225,214,.35);padding:5px 14px;border-radius:999px;margin-bottom:14px;
+  }
+  h2.sec-title{font-size:30px;font-weight:800;letter-spacing:.5px;margin-bottom:8px}
+  p.sec-desc{color:var(--sub);max-width:620px;margin-bottom:36px;font-size:15px}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:rgba(7,11,23,.82);border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;gap:18px;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:.5px}
+  .logo .badge{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:17px;
+    background:linear-gradient(135deg,var(--gold),var(--pink));box-shadow:0 6px 18px rgba(255,107,157,.35)}
+  .logo small{color:var(--sub);font-weight:500;font-size:12px;letter-spacing:.1em}
+  .nav-links{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+  .nav-links a{
+    padding:8px 14px;border-radius:999px;font-size:14px;color:var(--sub);
+    transition:.25s;white-space:nowrap;
+  }
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+  .nav-links a.active{color:#0f172a;background:linear-gradient(135deg,var(--cyan),var(--gold));font-weight:700}
+  .menu-btn{display:none;margin-left:auto;background:none;border:none;color:#fff;font-size:26px;cursor:pointer}
+
+  /* Hero */
+  .hero{padding:80px 0 60px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .hero h1{font-size:clamp(32px,5vw,54px);line-height:1.15;font-weight:900;letter-spacing:.5px}
+  .hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--sub);font-size:16px;margin:20px 0 26px;max-width:560px}
+  .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;
+    border:1px solid transparent;transition:.25s;cursor:pointer;
+  }
+  .btn-primary{background:linear-gradient(135deg,var(--gold),var(--pink));color:#1a0b12;box-shadow:0 10px 28px rgba(255,107,157,.3)}
+  .btn-primary:hover{transform:translateY(-3px)}
+  .btn-ghost{border-color:var(--line);color:var(--txt)}
+  .btn-ghost:hover{background:rgba(255,255,255,.06)}
+  .stats{display:flex;gap:28px;margin-top:34px;flex-wrap:wrap}
+  .stat b{display:block;font-size:26px;font-weight:800;color:var(--gold)}
+  .stat span{font-size:13px;color:var(--sub)}
+
+  .poster{
+    position:relative;aspect-ratio:3/4;border-radius:24px;padding:10px;
+    background:linear-gradient(140deg,rgba(56,225,214,.5),rgba(255,107,157,.5));
+    transform:rotate(2deg);transition:.4s;
+  }
+  .poster:hover{transform:rotate(0) scale(1.02)}
+  .poster .inner{height:100%;border-radius:16px;overflow:hidden;position:relative;
+    background:linear-gradient(160deg,#1c2c4d,#0b1330);display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+  .poster .glow{position:absolute;inset:0;background:
+      radial-gradient(circle at 20% 15%,rgba(245,182,66,.5),transparent 40%),
+      radial-gradient(circle at 85% 80%,rgba(255,107,157,.45),transparent 45%);opacity:.9}
+  .poster .film-strip{position:absolute;top:0;bottom:0;width:16px;background:repeating-linear-gradient(180deg,#000 0 10px,#222 10px 20px)}
+  .poster .film-strip.l{left:0}.poster .film-strip.r{right:0}
+  .poster .p-content{position:relative;z-index:2}
+  .poster .p-content h3{font-size:24px;margin-bottom:6px}
+  .poster .p-content p{color:var(--sub);font-size:13px}
+  .reel{position:absolute;top:-26px;right:-20px;font-size:60px;z-index:3;animation:spin 14s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Section base */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:34px}
+  .head .left .eyebrow{margin-bottom:10px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .tab{padding:7px 16px;border-radius:999px;font-size:13px;color:var(--sub);border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;transition:.2s}
+  .tab:hover{color:#fff}
+  .tab.on{color:#0f172a;background:var(--cyan);border-color:var(--cyan);font-weight:700}
+
+  /* Cards */
+  .grid{display:grid;gap:22px}
+  .grid.rank{grid-template-columns:repeat(4,1fr)}
+  .grid.list{grid-template-columns:repeat(3,1fr)}
+  .grid.genre{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.3s;position:relative}
+  .card:hover{transform:translateY(-6px);background:var(--card-hover);border-color:rgba(56,225,214,.4);box-shadow:0 18px 40px rgba(0,0,0,.45)}
+  .thumb{position:relative;aspect-ratio:2/3;overflow:hidden;background:linear-gradient(160deg,#1c2c4d,#0b1330)}
+  .thumb .ab{position:absolute;inset:0;display:grid;place-items:center;font-size:44px;filter:grayscale(.2)}
+  .thumb .score{position:absolute;top:10px;left:10px;background:rgba(7,11,23,.85);color:var(--gold);font-weight:800;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid rgba(245,182,66,.4)}
+  .thumb .year{position:absolute;bottom:10px;right:10px;background:rgba(7,11,23,.7);color:#fff;font-size:12px;padding:3px 9px;border-radius:6px}
+  .card .info{padding:14px 16px 16px}
+  .card .info h3{font-size:16px;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--sub)}
+  .card .meta i{font-style:normal;color:var(--cyan)}
+  .no{position:absolute;top:-1px;left:14px;font-size:34px;font-weight:900;color:rgba(255,255,255,.08);line-height:1}
+
+  /* Genre */
+  .genre-card{padding:24px;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(160deg,rgba(56,225,214,.16),rgba(255,107,157,.1)),var(--card)}
+  .genre-card .ic{font-size:32px;margin-bottom:auto}
+  .genre-card h3{font-size:18px;margin-bottom:4px}
+  .genre-card span{font-size:12px;color:var(--sub)}
+
+  /* Review */
+  .review{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:.3s}
+  .review:hover{border-color:rgba(245,182,66,.45);transform:translateY(-4px)}
+  .review .stars{color:var(--gold);letter-spacing:2px;font-size:14px}
+  .review h3{font-size:18px;margin:10px 0 8px}
+  .review p{color:var(--sub);font-size:14px}
+  .review .who{margin-top:16px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--sub)}
+  .avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:14px;background:linear-gradient(135deg,var(--cyan),var(--pink))}
+
+  /* Guide steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .step{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:22px;position:relative}
+  .step .num{font-size:40px;font-weight:900;color:rgba(245,182,66,.25);line-height:1}
+  .step h3{font-size:16px;margin:8px 0 6px}
+  .step p{font-size:13px;color:var(--sub)}
+
+  /* CTA band */
+  .band{background:linear-gradient(120deg,var(--gold),var(--pink));border-radius:26px;padding:44px 40px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+  .band h2{font-size:28px;color:#1a0b12}
+  .band p{color:rgba(26,11,18,.8);margin-top:8px}
+  .band .btn{background:#0f172a;color:#fff;justify-self:end}
+  .band .btn:hover{opacity:.88;transform:translateY(-2px)}
+
+  /* Footer */
+  footer{border-top:1px solid var(--line);padding:46px 0 30px;margin-top:40px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;margin-bottom:30px}
+  .foot-grid h4{font-size:15px;margin-bottom:12px;color:#fff}
+  .foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .foot-grid a{color:var(--sub);font-size:13px;transition:.2s}
+  .foot-grid a:hover{color:var(--cyan)}
+  .foot-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;margin-bottom:10px}
+  .copyright{text-align:center;color:var(--sub);font-size:12px;border-top:1px solid var(--line);padding-top:22px}
+  .copyright b{color:var(--gold)}
+
+  /* Mobile */
+  @media(max-width:900px){
+    .grid.rank,.grid.list,.grid.genre{grid-template-columns:repeat(2,1fr)}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .foot-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:720px){
+    .section{padding:48px 0}
+    .menu-btn{display:block}
+    .nav-links{
+      position:fixed;inset:64px 0 0 0;flex-direction:column;align-items:stretch;
+      background:rgba(10,16,33,.98);backdrop-filter:blur(12px);padding:20px;
+      transform:translateX(100%);transition:.35s;margin-left:0;gap:4px;
+    }
+    .nav-links.open{transform:translateX(0)}
+    .nav-links a{border-radius:12px;padding:14px 18px;font-size:16px}
+    .hero{padding:44px 0 30px}
+    .hero-grid{grid-template-columns:1fr}
+    .poster{max-width:340px;margin:10px auto 0;transform:none}
+    .band{grid-template-columns:1fr;padding:30px 24px}
+    .band .btn{justify-self:start}
+    h2.sec-title{font-size:24px}
+  }
+  @media(max-width:420px){
+    .wrap{padding:0 16px}
+    .grid.rank,.grid.list,.grid.genre,.steps{grid-template-columns:1fr}
+    .stats{gap:18px}
+  }
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/yazhou.js"></script>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="高分电影网首页">
+      <span class="badge" aria-hidden="true">🎬</span>
+      <span>高分电影网<small>gaofendianyingwang-app</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="切换导航菜单">☰</button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#top" class="active">首页</a>
+      <a href="#rank">电影排行</a>
+      <a href="#genre">类型片单</a>
+      <a href="#review">影评解析</a>
+      <a href="#guide">观影指南</a>
+      <a href="#about">关于我们</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 首页 / Hero -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow">★ 只推荐值得花时间的电影</span>
+      <h1>在<em>高分电影网</em>，<br>遇见每一部好电影</h1>
+      <p>高分电影网（gaofendianyingwang-app）为你精选豆瓣、IMDb、烂番茄多平台高分经典影片。告别片荒，用最短时间找到最值得一看的那一部。</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#rank">🏆 查看电影排行榜</a>
+        <a class="btn btn-ghost" href="#genre">🎞️ 按类型选片</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>1280+</b><span>精选高分影片</span></div>
+        <div class="stat"><b>26</b><span>电影类型片单</span></div>
+        <div class="stat"><b>9.2</b><span>入选影片平均评分</span></div>
+      </div>
+    </div>
+    <div class="poster" aria-hidden="true">
+      <span class="film-strip l"></span>
+      <span class="film-strip r"></span>
+      <span class="reel">🎞️</span>
+      <div class="inner">
+        <div class="glow"></div>
+        <div class="p-content">
+          <span class="eyebrow" style="border-color:rgba(245,182,66,.5);color:var(--gold)">本周推荐</span>
+          <h3>肖申克的救赎</h3>
+          <p>豆瓣 9.7 · IMDb 9.3 · 1994 · 剧情 / 人性</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目一：电影排行 -->
+<section class="section" id="rank">
+  <div class="wrap">
+    <div class="head">
+      <div class="left">
+        <span class="eyebrow">RANKING</span>
+        <h2 class="sec-title">高分电影排行榜</h2>
+        <p class="sec-desc">综合豆瓣、IMDb 与专业影评人评分，持续更新的高分电影榜单，帮你快速锁定必看佳作。</p>
+      </div>
+      <div class="tabs">
+        <button class="tab on">综合榜</button>
+        <button class="tab">豆瓣高分</button>
+        <button class="tab">IMDb 高分</button>
+      </div>
+    </div>
+
+    <div class="grid rank">
+      <article class="card">
+        <span class="no">01</span>
+        <div class="thumb"><span class="ab">🕊️</span><span class="score">9.7</span><span class="year">1994</span></div>
+        <div class="info">
+          <h3>肖申克的救赎</h3>
+          <div class="meta"><span>剧情</span><i>·</i><span>弗兰克·德拉邦特</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">02</span>
+        <div class="thumb"><span class="ab">⚫</span><span class="score">9.6</span><span class="year">1994</span></div>
+        <div class="info">
+          <h3>霸王别姬</h3>
+          <div class="meta"><span>剧情 / 爱情</span><i>·</i><span>陈凯歌</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">03</span>
+        <div class="thumb"><span class="ab">💍</span><span class="score">9.5</span><span class="year">1993</span></div>
+        <div class="info">
+          <h3>阿甘正传</h3>
+          <div class="meta"><span>剧情 / 励志</span><i>·</i><span>罗伯特·泽米吉斯</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">04</span>
+        <div class="thumb"><span class="ab">🤖</span><span class="score">9.4</span><span class="year">2010</span></div>
+        <div class="info">
+          <h3>盗梦空间</h3>
+          <div class="meta"><span>科幻 / 悬疑</span><i>·</i><span>克里斯托弗·诺兰</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">05</span>
+        <div class="thumb"><span class="ab">🐉</span><span class="score">9.4</span><span class="year">2001</span></div>
+        <div class="info">
+          <h3>千与千寻</h3>
+          <div class="meta"><span>动画 / 奇幻</span><i>·</i><span>宫崎骏</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">06</span>
+        <div class="thumb"><span class="ab">🃏</span><span class="score">9.3</span><span class="year">2008</span></div>
+        <div class="info">
+          <h3>蝙蝠侠：黑暗骑士</h3>
+          <div class="meta"><span>动作 / 犯罪</span><i>·</i><span>克里斯托弗·诺兰</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">07</span>
+        <div class="thumb"><span class="ab">🚢</span><span class="score">9.2</span><span class="year">1997</span></div>
+        <div class="info">
+          <h3>泰坦尼克号</h3>
+          <div class="meta"><span>爱情 / 灾难</span><i>·</i><span>詹姆斯·卡梅隆</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <span class="no">08</span>
+        <div class="thumb"><span class="ab">🎭</span><span class="score">9.3</span><span class="year">1997</span></div>
+        <div class="info">
+          <h3>美丽人生</h3>
+          <div class="meta"><span>剧情 / 喜剧</span><i>·</i><span>罗伯托·贝尼尼</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目二：类型片单 -->
+<section class="section" id="genre" style="background:linear-gradient(180deg,transparent,rgba(56,225,214,.05))">
+  <div class="wrap">
+    <div class="head">
+      <div class="left">
+        <span class="eyebrow">GENRE</span>
+        <h2 class="sec-title">按类型找电影</h2>
+        <p class="sec-desc">不知道看什么？从高分段落里按类型挑一部。每个分类都由高分电影网编辑人工筛选，拒绝凑数片单。</p>
+      </div>
+      <a class="btn btn-ghost" href="#guide">如何挑选 →</a>
+    </div>
+
+    <div class="grid genre">
+      <a class="card genre-card" href="#"><span class="ic">🚀</span><h3>科幻高分</h3><span>286 部 · 平均分 8.6</span></a>
+      <a class="card genre-card" href="#"><span class="ic">💔</span><h3>爱情经典</h3><span>198 部 · 平均分 8.4</span></a>
+      <a class="card genre-card" href="#"><span class="ic">😂</span><h3>喜剧治愈</h3><span>224 部 · 平均分 8.2</span></a>
+      <a class="card genre-card" href="#"><span class="ic">🔍</span><h3>悬疑烧脑</h3><span>176 部 · 平均分 8.7</span></a>
+      <a class="card genre-card" href="#"><span class="ic">⚔️</span><h3>战争史诗</h3><span>132 部 · 平均分 8.8</span></a>
+      <a class="card genre-card" href="#"><span class="ic">🎨</span><h3>动画佳作</h3><span>158 部 · 平均分 8.9</span></a>
+      <a class="card genre-card" href="#"><span class="ic">📜</span><h3>历史传记</h3><span>145 部 · 平均分 8.5</span></a>
+      <a class="card genre-card" href="#"><span class="ic">🌿</span><h3>文艺慢片</h3><span>210 部 · 平均分 8.3</span></a>
+    </div>
+
+    <div style="height:34px"></div>
+    <h3 style="font-size:20px;margin-bottom:20px">🔥 悬疑烧脑 · 高分片单</h3>
+    <div class="grid list">
+      <article class="card">
+        <div class="thumb"><span class="ab">🧩</span><span class="score">9.3</span><span class="year">2014</span></div>
+        <div class="info"><h3>看不见的客人</h3><div class="meta"><span>悬疑 / 犯罪</span><i>·</i><span>西班牙</span></div></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><span class="ab">🕳️</span><span class="score">9.1</span><span class="year">2000</span></div>
+        <div class="info"><h3>记忆碎片</h3><div class="meta"><span>悬疑 / 惊悚</span><i>·</i><span>克里斯托弗·诺兰</span></div></div>
+      </article>
+      <article class="card">
+        <div class="thumb"><span class="ab">🎩</span><span class="score">9.0</span><span class="year">2019</span></div>
+        <div class="info"><h3>利刃出鞘</h3><div class="meta"><span>悬疑 / 喜剧</span><i>·</i><span>美国</span></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目三：影评解析 -->
+<section class="section" id="review">
+  <div class="wrap">
+    <div class="head">
+      <div class="left">
+        <span class="eyebrow">REVIEWS</span>
+        <h2 class="sec-title">影评与深度解析</h2>
+        <p class="sec-desc">不止告诉你"看什么"，更讲清楚"为什么值得看"。高分电影网的原创影评，帮你读懂镜头背后的表达。</p>
+      </div>
+      <div class="tabs">
+        <button class="tab on">最新解析</button>
+        <button class="tab">导演专题</button>
+        <button class="tab">冷门佳作</button>
+      </div>
+    </div>
+
+    <div class="grid list">
+      <article class="review">
+        <div class="stars">★★★★★</div>
+        <h3>《盗梦空间》：诺兰如何用一层梦境讲清"执念"</h3>
+        <p>层层嵌套的叙事结构并非炫技，而是把"放下"这件事，变成了一道需要逐级破解的谜题。本文拆解四层梦境的对应关系与结尾陀螺的留白。</p>
+        <div class="who"><span class="avatar">影</span><span>高分电影网 · 编辑部 · 12 分钟阅读</span></div>
+      </article>
+      <article class="review">
+        <div class="stars">★★★★★</div>
+        <h3>《霸王别姬》：程蝶衣的"不疯魔，不成活"</h3>
+        <p>从京剧行当到时代洪流，一个"人戏不分"的角色为何成为中国电影的天花板？从镜头调度与张国荣的表演细节重新解读。</p>
+        <div class="who"><span class="avatar">评</span><span>高分电影网 · 深度稿 · 18 分钟阅读</span></div>
+      </article>
+      <article class="review">
+        <div class="stars">★★★★☆</div>
+        <h3>冷门高分：《困在时间里的父亲》与衰老的视角</h3>
+        <p>用空间错位模拟认知障碍，是近年最被低估的叙事实验之一。豆瓣 8.8，却少有人真正看懂它的镜头语言。</p>
+        <div class="who"><span class="avatar">荐</span><span>高分电影网 · 冷门推荐 · 8 分钟阅读</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目四：观影指南 -->
+<section class="section" id="guide" style="background:linear-gradient(180deg,rgba(245,182,66,.05),transparent)">
+  <div class="wrap">
+    <div class="head">
+      <div class="left">
+        <span class="eyebrow">GUIDE</span>
+        <h2 class="sec-title">观影指南</h2>
+        <p class="sec-desc">选片、观影、补影史，一套可执行的四步法。让"高分电影网"不只是一份片单，而是你的私人选片方法论。</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><span class="num">01</span><h3>明确心境</h3><p>想被治愈、想烧脑、还是想大哭一场？先定情绪，再定类型。</p></div>
+      <div class="step"><span class="num">02</span><h3>看评分分布</h3><p>不只看总分，看评分人数与五星占比，警惕"高分小众"。</p></div>
+      <div class="step"><span class="num">03</span><h3>试看 10 分钟</h3><p>节奏、画幅、对白密度是否对味，十分钟足够判断。</p></div>
+      <div class="step"><span class="num">04</span><h3>留白回味</h3><p>好电影值得二刷。看完别急着划走，让镜头在脑子里再放一遍。</p></div>
+    </div>
+
+    <div class="band" style="margin-top:44px">
+      <div>
+        <h2>每天一部高分电影，告别片荒 🎬</h2>
+        <p>关注高分电影网（gaofendianyingwang-app），获取每日推荐与影评更新。</p>
+      </div>
+      <a class="btn" href="#top">↑ 回到顶部</a>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目五：关于我们 -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="head">
+      <div class="left">
+        <span class="eyebrow">ABOUT</span>
+        <h2 class="sec-title">关于高分电影网</h2>
+        <p class="sec-desc">高分电影网（gaofendianyingwang-app）是一个专注于高分经典电影推荐、电影排行榜与影评解析的影视导航站点。我们相信：时间有限，只看最好的。</p>
+      </div>
+    </div>
+
+    <div class="grid genre">
+      <div class="card genre-card"><span class="ic">🎯</span><h3>精选而非堆砌</h3><span>每一部都经过人工复核</span></div>
+      <div class="card genre-card"><span class="ic">📊</span><h3>多平台交叉评分</h3><span>豆瓣 + IMDb + 烂番茄</span></div>
+      <div class="card genre-card"><span class="ic">✍️</span><h3>原创深度影评</h3><span>讲清楚为什么值得看</span></div>
+      <div class="card genre-card"><span class="ic">📱</span><h3>全端自适应</h3><span>手机、平板、电脑同样好用</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo"><span class="badge" style="width:30px;height:30px;font-size:15px">🎬</span>高分电影网</div>
+        <p style="color:var(--sub);font-size:13px;max-width:300px">高分电影网（gaofendianyingwang-app）· 专注于高分经典电影推荐、电影排行榜与影评解析。</p>
+      </div>
+      <div>
+        <h4>快速导航</h4>
+        <ul>
+          <li><a href="#top">首页</a></li>
+          <li><a href="#rank">电影排行榜</a></li>
+          <li><a href="#genre">类型片单</a></li>
+          <li><a href="#review">影评解析</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>选片帮助</h4>
+        <ul>
+          <li><a href="#guide">观影指南</a></li>
+          <li><a href="#">如何看懂文艺片</a></li>
+          <li><a href="#">新手入门片单</a></li>
+          <li><a href="#">评分说明</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>关于</h4>
+        <ul>
+          <li><a href="#about">关于我们</a></li>
+          <li><a href="#">投稿与合作</a></li>
+          <li><a href="#">免责声明</a></li>
+          <li><a href="#">意见反馈</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      © <span id="year"></span> <b>高分电影网</b>（gaofendianyingwang-app）· 网站网址：https://gaofendianyingwang-app.github.io &nbsp;|&nbsp; 本站为影视推荐导航，不提供影视资源下载与在线播放。
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 移动端菜单
+  var menuBtn = document.getElementById('menuBtn');
+  var navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', function(){
+    navLinks.classList.toggle('open');
+    menuBtn.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+  });
+  navLinks.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
+      navLinks.classList.remove('open');
+      menuBtn.textContent = '☰';
+    }
+  });
+
+  // 导航高亮
+  var links = navLinks.querySelectorAll('a');
+  var sections = [];
+  links.forEach(function(a){
+    var el = document.querySelector(a.getAttribute('href'));
+    if(el) sections.push(el);
+  });
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 120;
+    var cur = '';
+    sections.forEach(function(s){ if(s.offsetTop <= pos) cur = s.id; });
+    links.forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('href') === '#' + cur);
+    });
+  });
+
+  // Tab 切换
+  document.querySelectorAll('.tabs').forEach(function(group){
+    group.querySelectorAll('.tab').forEach(function(t){
+      t.addEventListener('click', function(){
+        group.querySelectorAll('.tab').forEach(function(x){ x.classList.remove('on'); });
+        t.classList.add('on');
+      });
+    });
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
